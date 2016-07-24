@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name = "tasks-for-notebook",
-    version = "0.0.3",
+    version = "0.0.4",
     packages=find_packages(),
     author="llby",
     author_email="llby@shingor.net",
