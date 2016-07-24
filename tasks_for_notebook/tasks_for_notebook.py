@@ -17,7 +17,7 @@ def read_task():
 def save_task(data):
   pandas.DataFrame(data).to_csv(file_name)
 
-def add_task(name, content, status):
+def add_task(name, content):
   data = read_task()
   df = pandas.DataFrame([{'name':name,'content':content,'status':'new'}], columns = ['name','content','status'])
   data = data.append(df, ignore_index=True)
