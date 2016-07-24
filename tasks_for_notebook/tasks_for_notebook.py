@@ -43,11 +43,11 @@ def show_task():
 def update_task(id, **kwargs):
   data = read_task()
   if kwargs.get('name'):
-    data['name'][id] = name
+    data['name'][id] = kwargs.get('name')
   if kwargs.get('content'):
-    data['content'][id] = content
+    data['content'][id] = kwargs.get('content')
   if kwargs.get('status'):
-    data['status'][id] = status
+    data['status'][id] = kwargs.get('status')
   save_task(data)
 
 def delete_task(id):
