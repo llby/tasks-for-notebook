@@ -2,6 +2,7 @@ import os
 import pandas
 from IPython.display import Javascript
 from IPython.display import HTML
+from datetime import datetime
 
 title_name = 'Tasks'
 file_name = 'tasks.csv'
@@ -19,7 +20,12 @@ def save_task(data):
 
 def add_task(name, content):
   data = read_task()
-  df = pandas.DataFrame([{'name':name,'content':content,'status':'new'}], columns = ['name','content','status'])
+  df = pandas.DataFrame([{
+         'name':name,
+         'content':content,
+         'status':'new',
+         'created_at':datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+       }], columns = ['name', 'content', 'status', 'created_at', 'updated_at'])
   data = data.append(df, ignore_index=True)
   save_task(data)
 
@@ -43,11 +49,12 @@ def show_task():
 def update_task(id, **kwargs):
   data = read_task()
   if kwargs.get('name'):
-    data['name'][id] = kwargs.get('name')
+    data.loc.__setitem__((slice(id, id), 'name'), kwargs.get('name'))
   if kwargs.get('content'):
-    data['content'][id] = kwargs.get('content')
+    data.loc.__setitem__((slice(id, id), 'content'), kwargs.get('content'))
   if kwargs.get('status'):
-    data['status'][id] = kwargs.get('status')
+    data.loc.__setitem__((slice(id, id), 'status'), kwargs.get('status'))
+  data.loc.__setitem__((slice(id, id), 'updated_at'), datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
   save_task(data)
 
 def delete_task(id):
