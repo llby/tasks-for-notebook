@@ -7,6 +7,7 @@ setup(
     packages=find_packages(),
     author="llby",
     author_email="llby@shingor.net",
+    description='TODO list on iPython notebook',
     license="MIT",
     url='https://github.com/llby/tasks-for-notebook',
     classifiers=["Topic :: Utilities"]
