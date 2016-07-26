@@ -33,6 +33,11 @@ def show_task():
   data = read_task()
   js = '''
     <link rel='stylesheet' type='text/css' href='%s'>
+    <style>
+      tbody tr.odd {
+        background-color: #f9f9f9 !important;
+      }
+    </style>
     <script>
       require.config({
         paths: {
