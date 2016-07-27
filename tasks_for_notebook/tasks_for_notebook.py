@@ -33,11 +33,6 @@ def show_task():
   data = read_task()
   js = '''
     <link rel='stylesheet' type='text/css' href='%s'>
-    <style>
-      tbody tr.odd {
-        background-color: #f9f9f9 !important;
-      }
-    </style>
     <script>
       require.config({
         paths: {
@@ -49,7 +44,7 @@ def show_task():
       });
     </script>
   '''%(css_name, js_name)
-  return HTML('<h2>%s</h2>'%(title_name) + data.to_html() + js)
+  return HTML('<h2>%s</h2>'%(title_name) + data.to_html(classes="display") + js)
 
 def update_task(id, **kwargs):
   data = read_task()
