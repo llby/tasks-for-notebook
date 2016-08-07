@@ -70,3 +70,7 @@ def delete_task(id):
   data = read_task()
   data = data.drop(id)
   save_task(data)
+
+def backup_task():
+  os.system( "mkdir backup" )
+  os.system( "cp %s backup/%s_%s"%(file_name, datetime.now().strftime("%Y%m%d%H%M%S"), file_name) )
