@@ -44,3 +44,28 @@ delete task
 ```
 delete_task(1)
 ```
+
+backup_task
+
+```
+backup_task()
+```
+
+graph_task
+
+```
+graph_task()
+```
+
+
+## Thanks
+
+use modules
+- python
+    - pandas
+    - numpy
+    - pandas_highcharts
+- javascripts
+    - datatables
+    - hightcharts
+

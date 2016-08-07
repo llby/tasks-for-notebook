@@ -1,13 +1,17 @@
 import os
+import json
 import pandas
-from IPython.display import Javascript
+import numpy
 from IPython.display import HTML
 from datetime import datetime
+import pandas_highcharts.core
 
 title_name = 'Tasks'
 file_name = 'tasks.csv'
-css_name = '//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'
-js_name = '//cdn.datatables.net/1.10.12/js/jquery.dataTables.min'
+css_dt_name = '//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css'
+js_dt_name = '//cdn.datatables.net/1.10.12/js/jquery.dataTables.min'
+js_hc_name_1 = '//code.highcharts.com/highcharts'
+js_hc_name_2 = '//code.highcharts.com/modules/exporting'
 
 def read_task():
   if os.path.exists(file_name):
@@ -42,7 +46,7 @@ def render_task(data):
         $('.dataframe').DataTable();
       });
     </script>
-  '''%(css_name, js_name)
+  '''%(css_dt_name, js_dt_name)
   return HTML('<h2>%s</h2>'%(title_name) + data.to_html(classes="display") + js)
 
 def show_done_task():
@@ -74,3 +78,30 @@ def delete_task(id):
 def backup_task():
   os.system( "mkdir backup" )
   os.system( "cp %s backup/%s_%s"%(file_name, datetime.now().strftime("%Y%m%d%H%M%S"), file_name) )
+
+def render_graph(data):
+  chart = pandas_highcharts.core.serialize(data, title=title_name, zoom="xy", output_type='dict')
+  chart['subtitle'] = {"text": "created tasks", "x": -20}
+  html = HTML('''
+  <div id="chart1" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+  <script>
+    require.config({
+      paths: {
+        highcharts: '%s',
+        exporting: '%s'
+      }
+    });
+    require(['highcharts','exporting'], function(){
+      $('#chart1').highcharts(%s);
+    });
+  </script>
+  ''' %(js_hc_name_1, js_hc_name_2, json.dumps(chart)))
+  return html
+
+def graph_task():
+  data = read_task()
+  data['datetime'] = pandas.to_datetime(data['created_at'])
+  data['count'] = data['name'].count()
+  data = data.groupby([data['datetime'].dt.year, data['datetime'].dt.month, data['datetime'].dt.day])['count'].count()
+  data = pandas.DataFrame(data)
+  return render_graph(data)
